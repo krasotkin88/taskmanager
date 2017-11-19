@@ -8,10 +8,18 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     // {id} must be a number (\d+)
     // The /{title} suffix is optional
     $r->addRoute('GET', '/articles/{id:\d+}[/{title}]', 'get_article_handler');
+
+    $r->get('/', 'TasksController@index');
     $r->get('/task/{id:\d+}', 'TasksController@show');
-    $r->get('/user/{id:\d+}', 'UsersController@show');
-    $r->get('/users', 'UsersController@index');
-    $r->get('/tasks', 'TasksController@index');
+    $r->addRoute(['GET', 'POST'], '/tasks/create', 'TasksController@create');
+
+    $r->addRoute(['GET', 'POST'],'/users/login', 'UsersController@login');
+    $r->get('/users/logout', 'UsersController@logout');
+    $r->get('/users/', 'UsersController@index');
+    $r->get('/users/{id:\d+}', 'UsersController@show');
+
+
+
 
 });
 

@@ -7,7 +7,9 @@ use Lib\Storage\Database\DataBase;
 class User
 {
     public static function getAllUsers(){
+
         $db = DataBase::getConnect();
+
         $sql = 'SELECT id, username, email, password FROM users';
         $res = $db->prepare($sql);
         $res->execute();
@@ -25,13 +27,48 @@ class User
     }
 
     public static function getUserById($id){
+
         $db = DataBase::getConnect();
+
         $sql = 'SELECT id, username, email, password FROM users WHERE id = :id';
+
         $res = $db->prepare($sql);
         $res->bindParam(':id', $id, \PDO::PARAM_INT);
         $res->execute();
 
         $user = $res->fetch();
+
         return $user;
+    }
+
+    public static function checkUserData($email, $password){
+
+        $db = DataBase::getConnect();
+
+        $sql = 'SELECT id, username, email, password FROM users WHERE email = :email AND password = :password';
+
+        $res = $db->prepare($sql);
+        $res->bindParam(':email', $email, \PDO::PARAM_STR);
+        $res->bindParam(':password', $password, \PDO::PARAM_STR);
+        $res->setFetchMode(\PDO::FETCH_ASSOC);
+        $res->execute();
+
+        $user = $res->fetch();
+
+        if($user) {
+            return $user['id'];
+        }
+        return false;
+    }
+
+    public static function auth($userId){
+        $_SESSION['user'] = $userId;
+    }
+
+    public static function checkLogged(){
+        if (isset($_SESSION['user'])) {
+            return $_SESSION['user'];
+        }
+        header("Location: /users/login");
     }
 }
