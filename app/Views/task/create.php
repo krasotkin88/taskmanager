@@ -1,4 +1,4 @@
-<?php include __DIR__.'/../layouts/header.php';?>
+<?php include __DIR__ . '/../layouts/header.php'; ?>
 
 <div class="container">
     <div class="page-header">
@@ -30,14 +30,16 @@
         <div class="form-group">
             <label for="name" class="col-lg-3 control-label">Название</label>
             <div class="col-lg-9">
-                <input required="" tabindex="1" type="text" name="title" id="name" placeholder="Название задачи" class="form-control">
+                <input required="" tabindex="1" type="text" name="title" id="name" placeholder="Название задачи"
+                       class="form-control">
             </div>
         </div>
 
         <div class="form-group">
             <label for="description" class="col-lg-3 control-label">Описание</label>
             <div class="col-lg-9">
-                <textarea required="" tabindex="2" class="form-control" rows="3" id="description" name="description" placeholder="Описание задачи"></textarea>
+                <textarea required="" tabindex="2" class="form-control" rows="3" id="description" name="description"
+                          placeholder="Описание задачи"></textarea>
             </div>
         </div>
 
@@ -46,7 +48,7 @@
             <div class="col-lg-9">
                 <select tabindex="2" name="executor" id="executor" class="form-control">
                     <?php foreach ($executors as $executor): ?>
-                    <option value="<?php echo $executor['id']; ?>"><?php echo $executor['username']; ?></option>
+                        <option value="<?php echo $executor['id']; ?>"><?php echo $executor['username']; ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -55,7 +57,8 @@
         <div class="form-group">
             <label for="deadline" class="col-lg-3 control-label">Дедлайн</label>
             <div class="col-lg-9">
-                <input type="date" id="deadline" name="deadline" class="form-control datepicker hasDatepicker" placeholder="ДД.ММ.ГГГГ">
+                <input type="date" id="deadline" name="deadline" class="form-control datepicker hasDatepicker"
+                       placeholder="ДД.ММ.ГГГГ">
             </div>
         </div>
 

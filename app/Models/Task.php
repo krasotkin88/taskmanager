@@ -11,7 +11,7 @@ class Task
 
         $db = DataBase::getConnect();
 
-        $sql = 'SELECT id, title, description, deadline, creator, executor FROM tasks';
+        $sql = 'SELECT id, title, description, deadline FROM tasks';
 
         $res = $db->prepare($sql);
 
@@ -34,11 +34,16 @@ class Task
         return $tasks;
     }
 
-    public static function getTasksByUser()
+    public static function getTasksByUser($user)
     {
         $db = DataBase::getConnect();
 
-        $sql = 'SELECT id, title, description, deadline, creator, executor FROM tasks WHERE executor='.$_SESSION['user'];
+        $sql = 'SELECT t.id, t.title, t.description, t.deadline, t.creator, u.username 
+                FROM tasks_executors t_e
+                INNER JOIN tasks t ON t.id=t_e.task_id
+                INNER JOIN users u ON u.id=t_e.user_id
+                WHERE t_e.user_id=' . $user;
+
 
         $res = $db->prepare($sql);
 
@@ -54,8 +59,8 @@ class Task
                 'title' => $row['title'],
                 'description' => $row['description'],
                 'deadline' => $row['deadline'],
+                'executor' => $row['username'],
                 'creator' => $row['creator'],
-                'executor' => $row['executor'],
             ];
         }
         return $tasks;
@@ -65,8 +70,10 @@ class Task
     {
         $db = DataBase::getConnect();
 
-        $sql = 'INSERT INTO tasks (title, description, deadline, creator, executor) 
-                VALUES (:title, :description, :deadline, :creator, :executor)';
+        $sql = 'INSERT INTO tasks (title, description, deadline, creator) 
+                VALUES (:title, :description, :deadline, :creator);
+                INSERT INTO tasks_executors (task_id, user_id)
+                VALUES ((SELECT MAX(id) FROM tasks), :user_id)';
 
         $res = $db->prepare($sql);
 
@@ -74,7 +81,7 @@ class Task
         $res->bindParam(':description', $description);
         $res->bindParam(':deadline', $deadline);
         $res->bindParam(':creator', $creator);
-        $res->bindParam(':executor', $executor);
+        $res->bindParam(':user_id', $executor);
 
         $res->execute();
 

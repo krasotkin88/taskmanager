@@ -14,15 +14,17 @@ class TasksController
 
         $user = User::getUserById($_SESSION['user']);
 
-        $tasks = Task::getTasksByUser();
+        $tasks = Task::getTasksByUser($_SESSION['user']);
 
-        require __DIR__.'/../Views/task/index.php';
+        require __DIR__ . '/../Views/task/index.php';
     }
+
 
     public function show($id)
     {
         echo "Task show $id";
     }
+
 
     public function create()
     {
@@ -41,6 +43,7 @@ class TasksController
 
             Task::addTask($title, $description, $deadline, $creator, $executor);
         }
+
         require __DIR__ . '/../Views/task/create.php';
     }
 

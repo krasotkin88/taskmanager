@@ -1,4 +1,4 @@
-<?php include __DIR__.'/../layouts/header.php';?>
+<?php include __DIR__ . '/../layouts/header.php'; ?>
 
 <div class="container">
     <div class="page-header">
@@ -9,26 +9,26 @@
 <div id="container" class="container">
 
 
-<!--    <div class="row">-->
-<!--        <div class="col-lg-4">-->
-<!--            <form class="form-horizontal">-->
-<!--                <div class="form-group">-->
-<!--                    <label for="department_id" class="control-label">Задачи по подразделению</label>-->
-<!--                    <select id="department_id" class="form-control">-->
-<!--                        <option selected>Выберите подразделение</option>-->
-<!--                        <option value="1">Управление</option>-->
-<!--                        <option value="2">Администрация</option>-->
-<!--                        <option value="3">Экспертная группа</option>-->
-<!--                        <option value="4">Орган инспекции</option>-->
-<!--                    </select>-->
-<!--                </div>-->
-<!--            </form>-->
-<!--        </div>-->
-<!--    </div>-->
+    <!--    <div class="row">-->
+    <!--        <div class="col-lg-4">-->
+    <!--            <form class="form-horizontal">-->
+    <!--                <div class="form-group">-->
+    <!--                    <label for="department_id" class="control-label">Задачи по подразделению</label>-->
+    <!--                    <select id="department_id" class="form-control">-->
+    <!--                        <option selected>Выберите подразделение</option>-->
+    <!--                        <option value="1">Управление</option>-->
+    <!--                        <option value="2">Администрация</option>-->
+    <!--                        <option value="3">Экспертная группа</option>-->
+    <!--                        <option value="4">Орган инспекции</option>-->
+    <!--                    </select>-->
+    <!--                </div>-->
+    <!--            </form>-->
+    <!--        </div>-->
+    <!--    </div>-->
 
-<?php if (isset($_SESSION['username'])) {
-    echo $_SESSION['username'];
-}?>
+    <?php if (isset($_SESSION['username'])) {
+        echo $_SESSION['username'];
+    } ?>
     <ul class="nav nav-tabs">
         <li class="active"><a href="?status=active">В работе <span class="badge">1</span></a></li>
         <li><a href="?status=today">На сегодня <span class="badge">0</a></li>
@@ -50,13 +50,13 @@
                     </thead>
                     <tbody>
                     <?php foreach ($tasks as $task): ?>
-                    <tr>
-                        <td><a href="/tasks/watch/45"><?php echo $task['title']; ?></a></td>
-                        <td><?php echo $task['deadline']; ?></td>
+                        <tr>
+                            <td><a href="/tasks/watch/45"><?php echo $task['title']; ?></a></td>
+                            <td><?php echo $task['deadline']; ?></td>
 
-                        <td><?php echo $task['executor']; ?></td>
-                        <td><?php echo $task['creator']; ?></td>
-                    </tr>
+                            <td><?php echo $task['executor']; ?></td>
+                            <td><?php echo $task['creator']; ?></td>
+                        </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
