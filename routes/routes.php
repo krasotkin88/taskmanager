@@ -10,8 +10,13 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
     $r->addRoute('GET', '/articles/{id:\d+}[/{title}]', 'get_article_handler');
 
     $r->get('/', 'TasksController@index');
-    $r->get('/task/{id:\d+}', 'TasksController@show');
+    $r->addRoute(['GET', 'POST'], '/tasks/{id:\d+}', 'TasksController@show');
     $r->addRoute(['GET', 'POST'], '/tasks/create', 'TasksController@create');
+    $r->addRoute(['GET', 'POST'], '/tasks/destroy/{id:\d+}', 'TasksController@destroy');
+    $r->addRoute(['GET', 'POST'], '/tasks/update-deadline/{id:\d+}', 'TasksController@update_deadline');
+    $r->addRoute(['GET', 'POST'], '/tasks/update-executor/{id:\d+}', 'TasksController@update_executor');
+
+
 
     $r->addRoute(['GET', 'POST'],'/users/login', 'UsersController@login');
     $r->get('/users/logout', 'UsersController@logout');

@@ -6,11 +6,12 @@ use Lib\Storage\Database\DataBase;
 
 class User
 {
-    public static function getAllUsers(){
+    public static function getAllUsers()
+    {
 
         $db = DataBase::getConnect();
 
-        $sql = 'SELECT id, username, email, password FROM users';
+        $sql = 'SELECT id, username, email, fullname FROM users';
         $res = $db->prepare($sql);
         $res->execute();
 
@@ -20,17 +21,18 @@ class User
                 'id' => $row['id'],
                 'username' => $row['username'],
                 'email' => $row['email'],
-                'password' => $row['password'],
+                'fullname' => $row['fullname'],
             ];
         }
         return $users;
     }
 
-    public static function getUserById($id){
+    public static function getUserById($id)
+    {
 
         $db = DataBase::getConnect();
 
-        $sql = 'SELECT id, username, email, password FROM users WHERE id = :id';
+        $sql = 'SELECT id, username, email, password, fullname FROM users WHERE id = :id';
 
         $res = $db->prepare($sql);
         $res->bindParam(':id', $id, \PDO::PARAM_INT);
@@ -41,7 +43,8 @@ class User
         return $user;
     }
 
-    public static function checkUserData($email, $password){
+    public static function checkUserData($email, $password)
+    {
 
         $db = DataBase::getConnect();
 
@@ -61,11 +64,13 @@ class User
         return false;
     }
 
-    public static function auth($userId){
+    public static function auth($userId)
+    {
         $_SESSION['user'] = $userId;
     }
 
-    public static function checkLogged(){
+    public static function checkLogged()
+    {
         if (isset($_SESSION['user'])) {
             return $_SESSION['user'];
         }

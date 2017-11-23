@@ -51,7 +51,7 @@
                     <tbody>
                     <?php foreach ($tasks as $task): ?>
                         <tr>
-                            <td><a href="/tasks/watch/45"><?php echo $task['title']; ?></a></td>
+                            <td><a href="/tasks/<?php echo $task['id']; ?>"><?php echo $task['title']; ?></a></td>
                             <td><?php echo $task['deadline']; ?></td>
 
                             <td><?php echo $task['executor']; ?></td>

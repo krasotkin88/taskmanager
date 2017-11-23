@@ -6,7 +6,8 @@ use App\Models\User;
 
 class UsersController
 {
-    public function index(){
+    public function index()
+    {
 
         User::checkLogged();
 
@@ -17,14 +18,16 @@ class UsersController
         include __DIR__ . '/../Views/user/index.php';
     }
 
-    public function show($id) {
+    public function show($id)
+    {
 
         $user = User::getUserById($id);
 
-        echo $user['username'];
+        echo $user['fullname'];
     }
 
-    public function login() {
+    public function login()
+    {
         $email = '';
         $password = '';
 
@@ -50,8 +53,8 @@ class UsersController
         include __DIR__ . '/../Views/user/auth.php';
     }
 
-    public function logout() {
-        session_start();
+    public function logout()
+    {
         unset($_SESSION['user']);
         header('Location: /');
     }

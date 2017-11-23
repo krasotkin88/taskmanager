@@ -12,7 +12,7 @@ class TasksController
 
         User::checkLogged();
 
-        $user = User::getUserById($_SESSION['user']);
+//        $user = User::getUserById($_SESSION['user']);
 
         $tasks = Task::getTasksByUser($_SESSION['user']);
 
@@ -22,15 +22,23 @@ class TasksController
 
     public function show($id)
     {
-        echo "Task show $id";
+        User::checkLogged();
+
+
+
+        $executors = User::getAllUsers();
+
+        $task = Task::getTaskById($id);
+
+        var_dump($task);
+
+        require __DIR__ . '/../Views/task/show.php';
     }
 
 
     public function create()
     {
         User::checkLogged();
-
-        $user = User::getUserById($_SESSION['user']);
 
         $executors = User::getAllUsers();
 
@@ -45,6 +53,35 @@ class TasksController
         }
 
         require __DIR__ . '/../Views/task/create.php';
+    }
+
+    public function destroy($id)
+    {
+        Task::deleteTaskById($id);
+
+        header('Location: /');
+    }
+
+    public function update_deadline($id)
+    {
+        $deadline = $_POST['deadline'];
+
+        Task::updateTasksDeadlineById($id, $deadline);
+
+        $referrer = $_SERVER['HTTP_REFERER'];
+
+        header('Location:' . $referrer);
+    }
+
+    public function update_executor($id)
+    {
+        $executor_id = $_POST['executor_id'];
+
+        Task::updateTasksExecutorById($id, $executor_id);
+
+        $referrer = $_SERVER['HTTP_REFERER'];
+
+        header('Location:' . $referrer);
     }
 
 }
