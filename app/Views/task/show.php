@@ -38,10 +38,18 @@
         <div class="panel-body">
             <form class="panel-body form-horizontal" method="post">
                 <div class="form-group col-lg-6">
-                    <input type="submit" name="finish" class="btn btn-sm btn-primary" value="Завершить">
                     <a href="/tasks/destroy/<?php echo $task['id']; ?>"><input type="button" name="delete"
                                                                                class="btn btn-sm btn-default"
                                                                                value="Удалить"></a>
+
+                </div>
+
+            </form>
+            <form class="panel-body form-horizontal" action="/tasks/update-status/<?php echo $task['id']; ?>" method="post">
+                <div class="form-group col-lg-6">
+                    <input type="submit" name="status"
+                           class="btn btn-sm btn-primary"
+                           value="completed">
 
                 </div>
             </form>

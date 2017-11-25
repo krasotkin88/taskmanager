@@ -8,15 +8,12 @@ class Task
 {
     public static function getAllTasks()
     {
-
         $db = DataBase::getConnect();
 
         $sql = 'SELECT id, title, description, deadline FROM tasks';
 
         $res = $db->prepare($sql);
-
         $res->setFetchMode(\PDO::FETCH_ASSOC);
-
         $res->execute();
 
         $tasks = [];
@@ -55,24 +52,24 @@ class Task
     }
 
 
-    public static function getTasksByUser($user)
+    public static function getTasksByUser($user, $status='active')
     {
         $db = DataBase::getConnect();
 
-        $sql = 'SELECT t.id, t.title, t.description, t.deadline, t.creator, u.username 
+        $sql = 'SELECT t.id, t.title, t.description, t.deadline, t.creator, t.status, u.username 
                 FROM tasks_executors t_e
                 INNER JOIN tasks t ON t.id=t_e.task_id
                 INNER JOIN users u ON u.id=t_e.user_id
-                WHERE t_e.user_id=' . $user;
-
+                WHERE t_e.user_id=' . $user
+                . ' AND t.status=' . "\"$status\"";
 
         $res = $db->prepare($sql);
-
         $res->setFetchMode(\PDO::FETCH_ASSOC);
-
         $res->execute();
 
         $tasks = [];
+
+        $count = 0;
 
         foreach ($res as $row) {
             $tasks[] = [
@@ -83,9 +80,14 @@ class Task
                 'executor' => $row['username'],
                 'creator' => $row['creator'],
             ];
+            $count++;
         }
+
+        $tasks['count'] = $count;
+
         return $tasks;
     }
+
 
     public static function addTask($title, $description, $deadline, $creator, $executor)
     {
@@ -97,17 +99,16 @@ class Task
                 VALUES ((SELECT MAX(id) FROM tasks), :user_id)';
 
         $res = $db->prepare($sql);
-
         $res->bindParam(':title', $title);
         $res->bindParam(':description', $description);
         $res->bindParam(':deadline', $deadline);
         $res->bindParam(':creator', $creator);
         $res->bindParam(':user_id', $executor);
-
         $res->execute();
 
         header('Location: /');
     }
+
 
     public static function deleteTaskById($id)
     {
@@ -119,6 +120,7 @@ class Task
         $res->bindParam(':id', $id, \PDO::PARAM_INT);
         $res->execute();
     }
+
 
     public static function updateTasksDeadlineById($id, $deadline)
     {
@@ -135,6 +137,7 @@ class Task
         $res->execute();
     }
 
+
     public static function updateTasksExecutorById($id, $executor_id)
     {
         $db = DataBase::getConnect();
@@ -145,10 +148,23 @@ class Task
                 WHERE task_id = :id';
 
         $res = $db->prepare($sql);
-//        $res->bindParam(':id', $id, \PDO::PARAM_INT);
         $res->bindParam(':id', $id, \PDO::PARAM_INT);
         $res->bindParam(':user_id', $executor_id, \PDO::PARAM_INT);
         $res->execute();
     }
 
+    public static function updateTasksStatusById($id, $status)
+    {
+        $db = DataBase::getConnect();
+
+        $sql = 'UPDATE tasks
+                SET
+                status = :status
+                WHERE id = :id';
+
+        $res = $db->prepare($sql);
+        $res->bindParam(':status', $status, \PDO::PARAM_STR);
+        $res->bindParam(':id', $id, \PDO::PARAM_STR);
+        $res->execute();
+    }
 }
