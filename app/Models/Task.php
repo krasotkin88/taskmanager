@@ -56,12 +56,21 @@ class Task
     {
         $db = DataBase::getConnect();
 
-        $sql = 'SELECT t.id, t.title, t.description, t.deadline, t.creator, t.status, u.username 
-                FROM tasks_executors t_e
-                INNER JOIN tasks t ON t.id=t_e.task_id
-                INNER JOIN users u ON u.id=t_e.user_id
-                WHERE t_e.user_id=' . $user
+        $sql = 'SELECT t.id, t.title, t.description, t.deadline, t.status, 
+                        u.username, u.fullname AS executor, creator.id, creator.fullname AS creator
+                FROM tasks_executors te
+                INNER JOIN tasks t 
+                ON t.id=te.task_id
+                INNER JOIN users u
+                ON te.user_id = u.id
+                INNER JOIN tasks_creators tc
+                ON tc.task_id = t.id
+                INNER JOIN users creator
+                ON creator.id = tc.user_id
+                WHERE te.user_id=' . $user
                 . ' AND t.status=' . "\"$status\"";
+
+
 
         $res = $db->prepare($sql);
         $res->setFetchMode(\PDO::FETCH_ASSOC);
@@ -77,7 +86,7 @@ class Task
                 'title' => $row['title'],
                 'description' => $row['description'],
                 'deadline' => $row['deadline'],
-                'executor' => $row['username'],
+                'executor' => $row['executor'],
                 'creator' => $row['creator'],
             ];
             $count++;

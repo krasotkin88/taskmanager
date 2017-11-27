@@ -21,6 +21,10 @@ class TasksController
 
         $tasks = Task::getTasksByUser($user, $status);
 
+        echo '<pre>';
+        var_dump($tasks);
+        echo '</pre>';
+
         require __DIR__ . '/../Views/task/index.php';
     }
 
