@@ -7,24 +7,6 @@
 
 </div>
 <div id="container" class="container">
-
-
-    <!--    <div class="row">-->
-    <!--        <div class="col-lg-4">-->
-    <!--            <form class="form-horizontal">-->
-    <!--                <div class="form-group">-->
-    <!--                    <label for="department_id" class="control-label">Задачи по подразделению</label>-->
-    <!--                    <select id="department_id" class="form-control">-->
-    <!--                        <option selected>Выберите подразделение</option>-->
-    <!--                        <option value="1">Управление</option>-->
-    <!--                        <option value="2">Администрация</option>-->
-    <!--                        <option value="3">Экспертная группа</option>-->
-    <!--                        <option value="4">Орган инспекции</option>-->
-    <!--                    </select>-->
-    <!--                </div>-->
-    <!--            </form>-->
-    <!--        </div>-->
-    <!--    </div>-->
     <form class="well form-horizontal" method="post">
 
         <div class="form-group">
@@ -48,7 +30,7 @@
             <div class="col-lg-9">
                 <select tabindex="2" name="executor" id="executor" class="form-control">
                     <?php foreach ($executors as $executor): ?>
-                        <option value="<?php echo $executor['id']; ?>"><?php echo $executor['username']; ?></option>
+                        <option value="<?php echo $executor['id']; ?>"><?php echo $executor['fullname']; ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

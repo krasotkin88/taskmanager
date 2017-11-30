@@ -36,10 +36,17 @@ class Task
     {
         $db = DataBase::getConnect();
 
-        $sql = 'SELECT t.id, t.title, t.description, t.deadline, t.creator, u.username, u.fullname
+        $sql = 'SELECT t.id, t.title, t.description, t.deadline, u.fullname AS executor, 
+                      creator.fullname AS creator
                 FROM tasks_executors t_e
-                INNER JOIN tasks t ON t_e.task_id = t.id
-                INNER JOIN users u ON t_e.user_id = u.id
+                INNER JOIN tasks t 
+                ON t_e.task_id = t.id
+                INNER JOIN users u 
+                ON t_e.user_id = u.id
+                INNER JOIN tasks_creators tc 
+                ON tc.task_id = t.id
+                INNER JOIN users creator
+                ON creator.id = tc.user_id
                 WHERE t_e.task_id=' . $id;
 
         $res = $db->prepare($sql);
@@ -56,8 +63,8 @@ class Task
     {
         $db = DataBase::getConnect();
 
-        $sql = 'SELECT t.id, t.title, t.description, t.deadline, t.status, 
-                        u.username, u.fullname AS executor, creator.id, creator.fullname AS creator
+        $sql = 'SELECT t.id AS task_id, t.title, t.description, t.deadline, 
+                        u.fullname AS executor, creator.fullname AS creator
                 FROM tasks_executors te
                 INNER JOIN tasks t 
                 ON t.id=te.task_id
@@ -67,8 +74,9 @@ class Task
                 ON tc.task_id = t.id
                 INNER JOIN users creator
                 ON creator.id = tc.user_id
-                WHERE te.user_id=' . $user
-                . ' AND t.status=' . "\"$status\"";
+                WHERE te.user_id=' . $user .
+                ' AND t.status=' . "\"$status\"" .
+                'ORDER BY deadline';
 
 
 
@@ -82,7 +90,7 @@ class Task
 
         foreach ($res as $row) {
             $tasks[] = [
-                'id' => $row['id'],
+                'id' => $row['task_id'],
                 'title' => $row['title'],
                 'description' => $row['description'],
                 'deadline' => $row['deadline'],
@@ -91,6 +99,8 @@ class Task
             ];
             $count++;
         }
+
+//        $tasks['count'] = count($tasks);
 
         $tasks['count'] = $count;
 
@@ -102,10 +112,14 @@ class Task
     {
         $db = DataBase::getConnect();
 
-        $sql = 'INSERT INTO tasks (title, description, deadline, creator) 
-                VALUES (:title, :description, :deadline, :creator);
+        $maxTaskId ='SELECT MAX(id) FROM tasks';
+
+        $sql = "INSERT INTO tasks (title, description, deadline) 
+                VALUES (:title, :description, :deadline);
                 INSERT INTO tasks_executors (task_id, user_id)
-                VALUES ((SELECT MAX(id) FROM tasks), :user_id)';
+                VALUES (($maxTaskId), :user_id);
+                INSERT INTO tasks_creators (task_id, user_id)
+                VALUES (($maxTaskId), :creator)";
 
         $res = $db->prepare($sql);
         $res->bindParam(':title', $title);
@@ -114,8 +128,6 @@ class Task
         $res->bindParam(':creator', $creator);
         $res->bindParam(':user_id', $executor);
         $res->execute();
-
-        header('Location: /');
     }
 
 

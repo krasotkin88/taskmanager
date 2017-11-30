@@ -53,6 +53,7 @@
                             </span>
                         </a>
                     </li>
+                    <?php if (\App\Models\User::isAdmin()): ?>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Компания <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -63,27 +64,14 @@
                                         </span>
                                 </a>
                             </li>
-                            <li>
-                                <a href="/company/departments/">
-                                        <span class="big-icon-inside">
-                                            <span class="glyphicon glyphicon-stats icon-big"></span>Подразделения
-                                        </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/company/positions/">
-                                        <span class="big-icon-inside">
-                                            <span class="glyphicon glyphicon-stats icon-big"></span>Должности
-                                        </span>
-                                </a>
-                            </li>
                         </ul>
                     </li>
+                    <?php endif; ?>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                           aria-haspopup="true" aria-expanded="false"><?php echo \App\Models\User::getUserById($_SESSION['user'])['username'] ;?>
+                           aria-haspopup="true" aria-expanded="false"><?php echo \App\Models\User::getUserById($_SESSION['user'])['fullname'] ;?>
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>

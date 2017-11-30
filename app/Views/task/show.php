@@ -105,7 +105,7 @@
                                 <?php foreach ($executors as $executor): ?>
                                     <option value="<?php echo $executor['id']; ?>"><?php echo $executor['fullname']; ?></option>
                                 <?php endforeach; ?>
-                                <option selected> <?php echo $task['fullname']; ?></option>
+                                <option selected> <?php echo $task['executor']; ?></option>
                             </select>
                         </div>
 

@@ -7,7 +7,6 @@
 <div id="container" class="container">
     <ul class="nav nav-tabs">
         <li class="<?php if ($_GET['status']=='active') echo 'active';?>"><a href="?status=active">В работе <span class="badge"><?php echo $tasks['count']; ?></span></a></li>
-        <li class="<?php if ($_GET['status']=='today') echo 'active';?>"><a href="?status=today">На сегодня <span class="badge"><?php echo $tasks['count']; ?></a></li>
         <li class="<?php if ($_GET['status']=='completed') echo 'active';?>"><a href="?status=completed">Завершенные <span class="badge"><?php echo $tasks['count']; ?></a></li>
     </ul>
     <div class="tab-content">

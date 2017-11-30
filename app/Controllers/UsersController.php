@@ -26,14 +26,34 @@ class UsersController
         echo $user['fullname'];
     }
 
+
+    public function create()
+    {
+        if (isset($_POST['email']) && isset($_POST['fullname'])) {
+            $email = $_POST['email'];
+            $fullname = $_POST['fullname'];
+
+            if (isset($_POST['admin'])) {
+                $admin = 1;
+            }else{
+                $admin = 0;
+            }
+
+            User::addUser($email, $fullname, $admin);
+
+            header('Location: /users/');
+        }
+
+        include __DIR__ . '/../Views/user/create.php';
+    }
+
+
     public function login()
     {
         $email = '';
         $password = '';
 
         $errors = false;
-
-
 
         if (isset($_POST['email']) && isset($_POST['password'])) {
 

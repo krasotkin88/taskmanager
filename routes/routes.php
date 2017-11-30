@@ -20,6 +20,7 @@ $dispatcher = FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $r) {
 
 
     $r->addRoute(['GET', 'POST'],'/users/login', 'UsersController@login');
+    $r->addRoute(['GET', 'POST'],'/users/create', 'UsersController@create');
     $r->get('/users/logout', 'UsersController@logout');
     $r->get('/users/', 'UsersController@index');
     $r->get('/users/{id:\d+}', 'UsersController@show');
